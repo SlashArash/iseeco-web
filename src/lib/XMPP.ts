@@ -37,6 +37,14 @@ export class XMPP {
     this.connection.on("input", (input: string) => {
       console.debug("⮈", input);
     });
+    this.connection.on("stanza", (stanza: any) => {
+      console.log(stanza.toString());
+      if (!stanza.is("message")) return;
+
+      const message = stanza.clone();
+      message.attrs.to = stanza.attrs.from;
+      this.connection.send(message);
+    });
     return this.connection.start();
   };
 
