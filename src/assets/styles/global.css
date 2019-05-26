@@ -1,0 +1,27 @@
+@font-face {
+  font-family: IRANSans;
+  font-style: normal;
+  font-weight: 900;
+  src: url('../fonts/shabnam/Shabnam.eot');
+  src: url('../fonts/shabnam/Shabnam.eot?#iefix') format('embedded-opentype'),
+    /* IE6-8 */ url('../fonts/shabnam/Shabnam.woff2') format('woff2'),
+    /* FF39+,Chrome36+, Opera24+*/ url('../fonts/shabnam/Shabnam.woff')
+      format('woff'),
+    /* FF3.6+, IE9, Chrome6+, Saf5.1+*/ url('../fonts/shabnam/Shabnam.ttf')
+      format('truetype');
+}
+
+* {
+  font-family: 'Shabnam', 'Roboto', sans-serif, sans-serif;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
