@@ -1,7 +1,9 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-import "./index.css";
-import { App } from "./containers/App/App";
+import 'assets/styles/global.css';
+import 'assets/styles/simple-grid.css';
 
-ReactDOM.render(<App />, document.getElementById("root"));
+import { App } from './containers/App/App';
+
+ReactDOM.render(<App />, document.getElementById('root'));
