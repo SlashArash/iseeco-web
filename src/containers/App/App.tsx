@@ -1,11 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
+import { persistor, store } from 'store/configureStore';
 import { XMPP } from 'lib/XMPP';
 
 import { Main } from './styles';
 import { Login } from 'components/Login';
 import { ProtectedRoute } from 'components/ProtectedRoute';
+import { Loading } from 'components/Loading';
 
 interface IComponentStates {
   connected: boolean;
@@ -42,13 +46,17 @@ export class App extends React.PureComponent<undefined, IComponentStates> {
 
   render() {
     return (
-      <Router>
-        <Main>
-          <ProtectedRoute path="/" exact={true} component={Index} />
-          <ProtectedRoute path="/setting" component={About} />
-          <Route path="/login" component={Login} />
-        </Main>
-      </Router>
+      <Provider store={store}>
+        <PersistGate loading={<Loading />} persistor={persistor}>
+          <Router>
+            <Main>
+              <ProtectedRoute path="/" exact={true} component={Index} />
+              <ProtectedRoute path="/setting" component={About} />
+              <Route path="/login" component={Login} />
+            </Main>
+          </Router>
+        </PersistGate>
+      </Provider>
     );
   }
 }
