@@ -49,11 +49,6 @@ export const Title = styled.span`
   font-weight: 400;
 `;
 
-export const Form = styled('form')`
-  display: flex;
-  flex-direction: column;
-`;
-
 export const ShadowInput = styled(Input)`
   border-radius: 3rem !important;
   &:focus {
