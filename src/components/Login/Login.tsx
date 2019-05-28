@@ -1,7 +1,12 @@
 import React, { PureComponent } from 'react';
 import { Formik, Form, FormikActions } from 'formik';
+import { connect, MapStateToProps, MapDispatchToProps } from 'react-redux';
+import { Dispatch, bindActionCreators } from 'redux';
 
+import { login } from 'store/app/actions';
 import messages from 'lib/Messages';
+import { xmpp } from 'lib/XMPP';
+
 import { Button } from 'components/Button';
 import {
   Title,
@@ -11,33 +16,81 @@ import {
   LoginWrapper,
   ButtonsWrapper,
 } from './styles';
+import { Redirect, RouteProps } from 'react-router';
+import IStore from 'types/IStore';
+
+interface IOwnProps {
+  dispatch: Dispatch;
+}
+
+interface IStateToProps {
+  authorized: boolean;
+}
+
+interface IDispatchToProps {
+  login: (
+    password: string | null,
+    serverName: string | null,
+    userName: string | null
+  ) => any;
+}
+
+type IComponentProps = IOwnProps &
+  IStateToProps &
+  IDispatchToProps &
+  RouteProps;
 
 interface ILoginValues {
   serverName: string;
   userName: string;
   password: string;
-  localIp: string;
 }
 
 const initialValues: ILoginValues = {
   serverName: '',
   userName: '',
   password: '',
-  localIp: '',
 };
 
-export class Login extends PureComponent {
+class Login extends PureComponent<IComponentProps> {
   handleLogin = (
     values: ILoginValues,
     formikActions: FormikActions<ILoginValues>
   ) => {
-    setTimeout(() => {
-      alert(JSON.stringify(values, null, 2));
-      formikActions.setSubmitting(false);
-    }, 400);
+    const { userName, password, serverName } = values;
+    if (userName.trim() !== '' && password.trim() !== '') {
+      xmpp
+        .login(
+          this.props.dispatch,
+          password,
+          serverName.toLowerCase(),
+          userName.toLowerCase()
+        )
+        .then(() => {
+          this.props.login(
+            password,
+            serverName.toLowerCase(),
+            userName.toLowerCase()
+          );
+        })
+        .catch((message: string) => {
+          if (message) {
+            alert(message);
+          }
+          this.setState({ loading: false });
+        });
+    } else {
+      alert('Please enter valid credential');
+      this.setState({ loading: false });
+    }
   };
 
   render() {
+    const { from } = this.props.location!!.state || { from: { pathname: '/' } };
+
+    if (this.props.authorized) {
+      return <Redirect to={from} />;
+    }
     return (
       <LoginWrapper>
         <LoginCard>
@@ -83,15 +136,6 @@ export class Login extends PureComponent {
                         onBlur={handleBlur}
                         value={values.password}
                       />
-                      <ShadowInput
-                        id="localIp"
-                        name="localIp"
-                        type="text"
-                        placeholder={messages.localIp}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.localIp}
-                      />
                       <ButtonsWrapper>
                         <Button
                           type="submit"
@@ -111,3 +155,21 @@ export class Login extends PureComponent {
     );
   }
 }
+
+const mapStateToProps: MapStateToProps<IStateToProps, IOwnProps, IStore> = (
+  state
+) => {
+  const authorized = !!state.app.userName && !!state.app.password;
+  return { authorized };
+};
+
+const mapDispatchToProps: MapDispatchToProps<IDispatchToProps, IOwnProps> = (
+  dispatch
+) => {
+  return bindActionCreators({ login }, dispatch);
+};
+
+export const connectedComponent = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);

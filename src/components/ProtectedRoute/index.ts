@@ -1,1 +1,1 @@
-export { ProtectedRoute } from "./ProtectedRoute";
+export { connectedComponent as ProtectedRoute } from './ProtectedRoute';

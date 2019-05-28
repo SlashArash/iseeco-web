@@ -1,59 +1,89 @@
-import { client, xml } from "@xmpp/client";
+import { client, xml, IClient } from '@xmpp/client';
+import { Dispatch } from 'redux';
 
-export class XMPP {
-  userName = "";
-  password = "";
-  server = "";
-  connection: any = undefined;
+interface IXMPP {
+  userName: string;
+  password: string;
+  serverName: string;
+  connection: null | IClient;
+  dispatch: null | Dispatch;
+  connect: () => Promise<any>;
+  login: (
+    dispatch: Dispatch,
+    password: string,
+    serverName: string,
+    userName: string
+  ) => Promise<any>;
+  message: (msg: string) => Promise<any>;
+}
 
-  constructor(userName: string, password: string, server: string) {
-    this.userName = userName;
-    this.password = password;
-    this.server = server;
-  }
+export const xmpp: IXMPP = {
+  userName: '',
+  password: '',
+  serverName: '',
+  connection: null,
+  dispatch: null,
 
-  connect = (): Promise<any> => {
-    this.connection = client({
-      service: "wss://jabb.im/websocket",
-      domain: "jabb.im",
-      password: this.password,
-      username: this.userName
+  /* tslint:disable:no-console */
+  connect: (): Promise<any> => {
+    xmpp.connection = client({
+      service: 'wss://jabb.im/websocket',
+      domain: 'jabb.im',
+      password: xmpp.password,
+      username: xmpp.userName,
     });
-    this.connection.on("message", (status: string) => {
-      console.log("messaeg", status);
+    xmpp.connection.on('message', (status: string) => {
+      console.log('message', status);
     });
-    this.connection.on("data", (status: string) => {
-      console.log("data", status);
+    xmpp.connection.on('data', (status: string) => {
+      console.log('data', status);
     });
-    this.connection.on("status", (status: string) => {
-      console.log("🛈", "status of ws", status);
+    xmpp.connection.on('status', (status: string) => {
+      console.log('🛈', 'status of ws', status);
     });
-    this.connection.on("error", (err: any) => {
+    xmpp.connection.on('error', (err: any) => {
       console.error(err.toString());
     });
-    this.connection.on("online", async (address: any) => {
-      console.log("▶", "online as", address.toString());
+    xmpp.connection.on('online', async (address: any) => {
+      await xmpp.connection!.send(xml('presence'));
     });
-    this.connection.on("input", (input: string) => {
-      console.debug("⮈", input);
+    xmpp.connection.on('input', (input: string) => {
+      console.debug('⮈', input);
     });
-    this.connection.on("stanza", (stanza: any) => {
+    xmpp.connection.on('stanza', (stanza: any) => {
       console.log(stanza.toString());
-      if (!stanza.is("message")) return;
-
-      const message = stanza.clone();
-      message.attrs.to = stanza.attrs.from;
-      this.connection.send(message);
+      if (!stanza.is('message')) {
+        return;
+      }
     });
-    return this.connection.start();
-  };
 
-  message = (msg: string): Promise<any> => {
+    return xmpp.connection.start();
+  },
+  /* tslint:enable:no-console */
+
+  login: (
+    dispatch: Dispatch,
+    password: string,
+    serverName: string,
+    userName: string
+  ) => {
+    xmpp.dispatch = dispatch;
+    xmpp.password = password;
+    xmpp.serverName = serverName;
+    xmpp.userName = userName;
+
+    return xmpp.connect();
+  },
+
+  message: (msg: string): Promise<any> => {
     const message = xml(
-      "message",
-      { type: "chat", to: `${this.server}@jabb.im` },
-      xml("body", {}, msg)
+      'message',
+      { type: 'chat', to: `${xmpp.serverName}@jabb.im` },
+      xml('body', {}, msg)
     );
-    return this.connection.send(message);
-  };
-}
+    if (xmpp.connection) {
+      return xmpp.connection.send(message);
+    }
+    return Promise.reject();
+  },
+};

@@ -1,1 +1,1 @@
-export { Login } from "./Login";
+export { connectedComponent as Login } from './Login';
