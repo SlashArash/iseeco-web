@@ -7,13 +7,11 @@ import {
 } from 'types/AppActions';
 
 export const login = (
-  ip: string | null,
   password: string | null,
   serverName: string | null,
   userName: string | null
 ): ILogin => ({
   type: AppActionTypes.LOGIN,
-  ip,
   password,
   serverName,
   userName,

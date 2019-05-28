@@ -7,7 +7,6 @@ export enum AppActionTypes {
 
 export interface ILogin {
   type: AppActionTypes.LOGIN;
-  ip: string | null;
   password: string | null;
   serverName: string | null;
   userName: string | null;

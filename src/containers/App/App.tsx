@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import { persistor, store } from 'store/configureStore';
-import { XMPP } from 'lib/XMPP';
 
 import { Main } from './styles';
 import { Login } from 'components/Login';
@@ -26,22 +25,6 @@ function About() {
 export class App extends React.PureComponent<undefined, IComponentStates> {
   state = {
     connected: false,
-  };
-  xmpp: any = undefined;
-
-  handleChangeConnection = () => {
-    this.xmpp = new XMPP('slasharash', '123987456', 'kadkhodaei');
-    this.xmpp.connect().then(() => {
-      this.setState({ connected: true });
-    });
-  };
-
-  handleSendMessage = () => {
-    this.xmpp
-      .message('client&iseeco6&iseecoserver6&00:00:00&0&&client')
-      .then(() => {
-        console.log('the message sent');
-      });
   };
 
   render() {
