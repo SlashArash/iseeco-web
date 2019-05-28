@@ -32,6 +32,7 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.0",
     "redux": "^4.0.1",
+    "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
     "styled-components": "^4.2.0"
   },
@@ -42,6 +43,7 @@
     "@types/react-dom": "^16.8.4",
     "@types/react-redux": "^7.0.9",
     "@types/react-router-dom": "^4.3.3",
+    "@types/redux-persist": "^4.3.1",
     "@types/styled-components": "^4.1.15",
     "@types/xmpp__jid": "^0.6.1",
     "@types/xmpp__xml": "^0.6.0",
