@@ -25,3 +25,7 @@ code {
   display: flex;
   flex-direction: column;
 }
+
+p {
+  margin: 5px 0;
+}

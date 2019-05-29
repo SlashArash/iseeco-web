@@ -7,8 +7,8 @@ export class Main extends React.PureComponent {
   render() {
     return (
       <Body>
-        <SideNav />
         <Container>{this.props.children}</Container>
+        <SideNav />
       </Body>
     );
   }
