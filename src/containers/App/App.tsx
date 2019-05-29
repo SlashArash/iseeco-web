@@ -1,25 +1,20 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import { persistor, store } from 'store/configureStore';
 
-import { Main } from './styles';
-import { Login } from 'components/Login';
 import { ProtectedRoute } from 'components/ProtectedRoute';
 import { Loading } from 'components/Loading';
+import { Login } from 'components/Login';
+import { HomePage } from 'containers/HomePage';
+import { SettingsPage } from 'containers/SettingsPage';
+import { NotFound } from 'components/NotFound';
+import { Main } from 'components/Main';
 
 interface IComponentStates {
   connected: boolean;
-}
-
-function Index() {
-  return <h2>Home</h2>;
-}
-
-function About() {
-  return <h2>About</h2>;
 }
 
 export class App extends React.PureComponent<undefined, IComponentStates> {
@@ -33,9 +28,12 @@ export class App extends React.PureComponent<undefined, IComponentStates> {
         <PersistGate loading={<Loading />} persistor={persistor}>
           <Router>
             <Main>
-              <ProtectedRoute path="/" exact={true} component={Index} />
-              <ProtectedRoute path="/setting" component={About} />
-              <Route path="/login" component={Login} />
+              <Switch>
+                <ProtectedRoute path="/" exact={true} component={HomePage} />
+                <ProtectedRoute path="/settings" component={SettingsPage} />
+                <Route path="/login" component={Login} />
+                <Route component={NotFound} />
+              </Switch>
             </Main>
           </Router>
         </PersistGate>
