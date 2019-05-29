@@ -48,7 +48,7 @@ class StatusBox extends React.PureComponent<IComponentProps> {
             {messages.activeDevices}: {activeDevices}
           </LightText>
           <LightText>
-            {messages.internetConnection}: {connection.internet ? '✓' : '×'}
+            {messages.networkConnection}: {connection.internet ? '✓' : '×'}
           </LightText>
         </TextWrapper>
         <Image src={logo} />

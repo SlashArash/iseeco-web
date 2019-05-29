@@ -8,7 +8,7 @@ import { persistor, store } from 'store/configureStore';
 import { ProtectedRoute } from 'components/ProtectedRoute';
 import { Loading } from 'components/Loading';
 import { Login } from 'components/Login';
-import { HomePage } from 'containers/HomePage';
+import HomePage from 'containers/HomePage';
 import { SettingsPage } from 'containers/SettingsPage';
 import { NotFound } from 'components/NotFound';
 import { Main } from 'components/Main';
