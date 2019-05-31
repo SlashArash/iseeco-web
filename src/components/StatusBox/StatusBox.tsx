@@ -39,7 +39,7 @@ class StatusBox extends React.PureComponent<IComponentProps> {
       0
     );
     return (
-      <Container connected={connection.local && connection.internet}>
+      <Container connected={connection.internet}>
         <TextWrapper>
           <TextContainer>
             <MainText>{messages.smartHomeSystem}</MainText>
