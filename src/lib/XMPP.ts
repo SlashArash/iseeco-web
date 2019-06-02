@@ -46,12 +46,6 @@ export const xmpp: IXMPP = {
       password: xmpp.password,
       username: xmpp.userName,
     });
-    xmpp.connection.on('message', (status: any) => {
-      console.log('harchi');
-    });
-    xmpp.connection.on('data', (status: string) => {
-      console.log('data', status);
-    });
     xmpp.connection.on('status', (status: string) => {
       console.log('🛈', 'status of ws', status);
     });

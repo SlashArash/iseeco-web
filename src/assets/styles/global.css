@@ -29,3 +29,8 @@ code {
 p {
   margin: 5px 0;
 }
+
+a {
+  text-decoration: none;
+  color: #4c5159;
+}
