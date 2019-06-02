@@ -18,6 +18,7 @@ const PlacesList: StatelessComponent<IComponentProps> = ({
     <h3>{messages.rooms}</h3>
     <div
       style={{
+        display: 'flex',
         flexDirection: 'row',
         flexWrap: 'wrap',
       }}
@@ -26,7 +27,7 @@ const PlacesList: StatelessComponent<IComponentProps> = ({
         <PlaceCard
           key={place.name}
           place={place}
-          onPress={onClickOnAPlace(place.name)}
+          onClick={onClickOnAPlace(place.name)}
         />
       ))}
     </div>

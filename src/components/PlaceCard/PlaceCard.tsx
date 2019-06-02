@@ -9,9 +9,15 @@ import { colors } from 'utils/theme/colors';
 
 import { Card, CardBody, ImageIcon } from './styles';
 
+import bath from 'assets/images/icons/bath-dark.png';
+import bed from 'assets/images/icons/bed-dark.png';
+import washing from 'assets/images/icons/washing-dark.png';
+import tv from 'assets/images/icons/tv-dark.png';
+import unknown from 'assets/images/icons/unknown-dark.png';
+
 interface IOwnProps {
   place: IPlace;
-  onPress: () => void;
+  onClick: () => void;
 }
 
 interface IStateToProps {
@@ -20,27 +26,25 @@ interface IStateToProps {
 
 type IComponentProps = IOwnProps & IStateToProps;
 
-// const requireIcon = (place: IPlace) => {
-//   let icon = require(`../../../assets/images/icons/unknown-dark.png`);
-
-//   if (place.iconNumber === '1') {
-//     icon = require(`../../../assets/images/icons/bath-dark.png`);
-//   } else if (place.iconNumber === '2') {
-//     icon = require(`../../../assets/images/icons/bed-dark.png`);
-//   } else if (place.iconNumber === '3') {
-//     icon = require(`../../../assets/images/icons/washing-dark.png`);
-//   } else if (place.iconNumber === '4') {
-//     icon = require(`../../../assets/images/icons/tv-dark.png`);
-//   }
-//   return icon;
-// };
+const requireIcon = (place: IPlace) => {
+  if (place.iconNumber === '1') {
+    return bath;
+  } else if (place.iconNumber === '2') {
+    return bed;
+  } else if (place.iconNumber === '3') {
+    return washing;
+  } else if (place.iconNumber === '4') {
+    return tv;
+  }
+  return unknown;
+};
 
 const PlaceCard: StatelessComponent<IComponentProps> = ({
   place,
-  onPress,
+  onClick,
   devices,
 }) => {
-  // const icon = requireIcon(place);
+  const icon = requireIcon(place);
   const devicesNumber = place.devices.reduce(
     (sum: number, deviceId: string) => {
       Object.keys(devices[deviceId]).forEach(() => {
@@ -51,9 +55,8 @@ const PlaceCard: StatelessComponent<IComponentProps> = ({
     0
   );
   return (
-    <Card onClick={onPress}>
+    <Card onClick={onClick}>
       <CardBody>
-        {/* <ImageIcon src={icon} /> */}
         <div>
           <p>{place.name}</p>
           <p style={{ color: colors.smoke, fontSize: 10 }}>
@@ -62,6 +65,7 @@ const PlaceCard: StatelessComponent<IComponentProps> = ({
               : `${messages.without} ${messages.device}`}
           </p>
         </div>
+        <ImageIcon src={icon} />
       </CardBody>
     </Card>
   );

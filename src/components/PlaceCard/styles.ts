@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const Card = styled('div')`
+  display: flex;
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: 40%;
@@ -11,6 +12,8 @@ export const Card = styled('div')`
   padding: 1rem;
   margin: 1rem;
   background-color: '#ffffff';
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
 `;
 
 export const CardBody = styled('div')`
@@ -18,10 +21,10 @@ export const CardBody = styled('div')`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  flex: 1;
 `;
 
 export const ImageIcon = styled('img')`
-  width: 40px;
-  height: 40px;
-  margin-bottom: 1rem;
+  width: 70px;
+  height: 70px;
 `;
