@@ -26,6 +26,7 @@ export const InputWrapper = styled('div')`
 export const InputTag = styled('input')<IInputProps>`
   padding: 0.5rem 0.7rem;
   font-size: 1rem;
+  color: ${colors.black};
   &::placeholder {
     font-weight: lighter !important;
   }

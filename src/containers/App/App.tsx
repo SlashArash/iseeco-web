@@ -12,6 +12,7 @@ import HomePage from 'containers/HomePage';
 import { SettingsPage } from 'containers/SettingsPage';
 import { NotFound } from 'components/NotFound';
 import { Main } from 'components/Main';
+import DevicesPage from 'containers/DevicesPage';
 
 interface IComponentStates {
   connected: boolean;
@@ -29,8 +30,12 @@ export class App extends React.PureComponent<undefined, IComponentStates> {
           <Router>
             <Main>
               <Switch>
-                <ProtectedRoute path="/" exact={true} component={HomePage} />
                 <ProtectedRoute path="/settings" component={SettingsPage} />
+                <ProtectedRoute path="/" exact={true} component={HomePage} />
+                <ProtectedRoute
+                  path="/place/:placeId/devices"
+                  component={DevicesPage}
+                />
                 <Route path="/login" component={Login} />
                 <Route component={NotFound} />
               </Switch>
