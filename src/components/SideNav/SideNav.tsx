@@ -1,16 +1,15 @@
 import React from 'react';
 import { Home, Settings } from 'react-feather';
-import { Link } from 'react-router-dom';
 
-import { Wrapper } from './styles';
+import { Wrapper, IconLink } from './styles';
 
 export const SideNav = () => (
   <Wrapper>
-    <Link to="/">
+    <IconLink to="/">
       <Home />
-    </Link>
-    <Link to="/settings">
+    </IconLink>
+    <IconLink to="/settings">
       <Settings />
-    </Link>
+    </IconLink>
   </Wrapper>
 );
