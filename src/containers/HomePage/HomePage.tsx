@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect, MapStateToProps } from 'react-redux';
 import { Dispatch } from 'redux';
+import { Redirect, RouteProps } from 'react-router';
 
 import IStore from 'types/IStore';
 import IPlaces from 'types/IPlaces';
@@ -22,9 +23,20 @@ interface IStateToProps {
   userName: string | null;
 }
 
-type IComponentProps = IOwnProps & IStateToProps;
+type IComponentProps = IOwnProps & IStateToProps & RouteProps;
 
-export class HomePage extends React.PureComponent<IComponentProps> {
+interface IComponentStates {
+  selectedPlace: string | null;
+}
+
+export class HomePage extends React.PureComponent<
+  IComponentProps,
+  IComponentStates
+> {
+  state = {
+    selectedPlace: null,
+  };
+
   componentDidMount = async () => {
     const { connected, password, serverName, userName, dispatch } = this.props;
     if (!connected && password && serverName && userName) {
@@ -32,33 +44,20 @@ export class HomePage extends React.PureComponent<IComponentProps> {
         dispatch(login(password, serverName, userName));
         this.getData();
       });
-    } else {
-      this.getData();
     }
   };
 
   getData = () => {
     xmpp.getPlaces();
-    this.setState({ loading: false });
-  };
-
-  handlePressOnAPlace = (placeId: string) => () => {
-    // this.props.navigation.navigate('Place', { placeId });
-  };
-
-  handleClickOnAPlace = (placeId: string) => () => {
-    alert(placeId);
   };
 
   render() {
     const { places } = this.props;
+
     return (
       <React.Fragment>
         <StatusBox />
-        <PlacesList
-          places={places}
-          onClickOnAPlace={this.handleClickOnAPlace}
-        />
+        <PlacesList places={places} />
       </React.Fragment>
     );
   }

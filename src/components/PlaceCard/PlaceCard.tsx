@@ -17,7 +17,6 @@ import unknown from 'assets/images/icons/unknown-dark.png';
 
 interface IOwnProps {
   place: IPlace;
-  onClick: () => void;
 }
 
 interface IStateToProps {
@@ -39,11 +38,7 @@ const requireIcon = (place: IPlace) => {
   return unknown;
 };
 
-const PlaceCard: StatelessComponent<IComponentProps> = ({
-  place,
-  onClick,
-  devices,
-}) => {
+const PlaceCard: StatelessComponent<IComponentProps> = ({ place, devices }) => {
   const icon = requireIcon(place);
   const devicesNumber = place.devices.reduce(
     (sum: number, deviceId: string) => {
@@ -55,7 +50,7 @@ const PlaceCard: StatelessComponent<IComponentProps> = ({
     0
   );
   return (
-    <Card onClick={onClick}>
+    <Card to={`/place/${place.name}/devices`}>
       <CardBody>
         <div>
           <p>{place.name}</p>
