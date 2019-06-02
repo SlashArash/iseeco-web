@@ -70,7 +70,7 @@ const mapStateToProps: MapStateToProps<IStateToProps, IOwnProps, IStore> = (
   const password = state.app.password;
   const serverName = state.app.serverName;
   const userName = state.app.userName;
-  const connected = state.app.connected;
+  const connected = state.connection.internet;
 
   return { places, password, serverName, userName, connected };
 };

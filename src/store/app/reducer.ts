@@ -9,7 +9,6 @@ const initialState: IApp = {
   serverName: null,
   userName: null,
   scenario: 1,
-  connected: false,
 };
 
 const AppReducer = (state: IApp = initialState, action: AppActions) =>
