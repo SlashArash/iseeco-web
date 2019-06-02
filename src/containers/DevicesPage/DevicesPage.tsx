@@ -5,8 +5,12 @@ import { MapStateToProps, connect } from 'react-redux';
 import IStore from 'types/IStore';
 import IDevices from 'types/IDevices';
 import messages from 'lib/Messages';
+import IDevice from 'types/IDevice';
+import mapDeviceType from 'lib/mapDeviceType';
+import { changeLampState } from 'lib/deviceUtils';
 
 import DeviceCard from 'components/DeviceCard';
+import { xmpp } from 'lib/XMPP';
 
 interface IParams {
   placeId: string;
@@ -22,6 +26,18 @@ interface IOwnProps extends RouteComponentProps<IParams> {}
 type IComponentProps = IOwnProps & IStateToProps;
 
 class DevicesPage extends React.PureComponent<IComponentProps> {
+  handleClickOnDevice = (device: IDevice) => () => {
+    const deviceType = mapDeviceType(device.type);
+    if (deviceType === 'lamp') {
+      const message = changeLampState(device);
+      xmpp.updateDeviceStatus(message);
+    } else if (deviceType === 'thermostat') {
+      alert('thermostat');
+    } else if (deviceType === 'curtain') {
+      alert('curtain');
+    }
+  };
+
   render() {
     const { match, deviceList, devices } = this.props;
     return (
@@ -39,6 +55,7 @@ class DevicesPage extends React.PureComponent<IComponentProps> {
                   <DeviceCard
                     key={`${device.number}-${device.name}`}
                     device={device}
+                    onClick={this.handleClickOnDevice(device)}
                   />
                 ))}
               </React.Fragment>

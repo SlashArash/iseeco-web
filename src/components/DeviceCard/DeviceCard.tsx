@@ -34,6 +34,7 @@ import star from 'assets/images/icons/star-dark.png';
 
 interface IComponentProps {
   device: IDevice;
+  onClick: () => void;
 }
 
 const getIcon = (device: IDevice) => {
@@ -82,10 +83,13 @@ const getIcon = (device: IDevice) => {
   return icon;
 };
 
-const DeviceCard: React.StatelessComponent<IComponentProps> = ({ device }) => {
+const DeviceCard: React.StatelessComponent<IComponentProps> = ({
+  device,
+  onClick,
+}) => {
   const icon = getIcon(device);
   return (
-    <Card>
+    <Card onClick={onClick}>
       <CardBody>
         <ImageIcon src={icon} />
         <p>{device.name}</p>

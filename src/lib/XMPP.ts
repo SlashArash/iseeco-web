@@ -28,6 +28,7 @@ interface IXMPP {
   ) => Promise<any>;
   message: (msg: string) => Promise<any>;
   packMessage: (message: string, type: string) => string;
+  updateDeviceStatus: (msg: string) => void;
 }
 
 export const xmpp: IXMPP = {
@@ -59,7 +60,6 @@ export const xmpp: IXMPP = {
 
     xmpp.connection.on('stanza', (stanza: any) => {
       if (!stanza.is('message')) {
-        console.log('in condition', stanza.toString());
         return;
       }
       const message = stanza.children[0].children[0];
@@ -144,5 +144,9 @@ export const xmpp: IXMPP = {
     return `client&${xmpp.userName}&${xmpp.serverName}&${
       xmpp.lastUpdateTime
     }&${type}&${message}&client`;
+  },
+  updateDeviceStatus: (msg: string) => {
+    const message = xmpp.packMessage(msg, '2');
+    xmpp.message(message);
   },
 };
