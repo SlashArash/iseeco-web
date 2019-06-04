@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect, MapStateToProps } from 'react-redux';
 import { Dispatch } from 'redux';
-import { Redirect, RouteProps } from 'react-router';
+import { RouteProps } from 'react-router';
 
 import IStore from 'types/IStore';
 import IPlaces from 'types/IPlaces';

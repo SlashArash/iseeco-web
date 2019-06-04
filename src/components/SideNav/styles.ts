@@ -7,6 +7,10 @@ export const Wrapper = styled('div')`
   display: flex;
   justify-content: space-around;
   align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
 `;
 
 export const IconLink = styled(Link)`
