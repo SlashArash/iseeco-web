@@ -11,6 +11,8 @@ import { changeLampState } from 'lib/deviceUtils';
 
 import DeviceCard from 'components/DeviceCard';
 import { xmpp } from 'lib/XMPP';
+import ThermostatModal from 'components/ThermostatModal';
+import CurtainModal from 'components/CurtainModal';
 
 interface IParams {
   placeId: string;
@@ -25,21 +27,39 @@ interface IOwnProps extends RouteComponentProps<IParams> {}
 
 type IComponentProps = IOwnProps & IStateToProps;
 
-class DevicesPage extends React.PureComponent<IComponentProps> {
+interface IComponentStates {
+  thermostatModal: null | IDevice;
+  curtainModal: null | IDevice;
+}
+
+class DevicesPage extends React.PureComponent<
+  IComponentProps,
+  IComponentStates
+> {
+  state = {
+    thermostatModal: null,
+    curtainModal: null,
+  };
+
   handleClickOnDevice = (device: IDevice) => () => {
     const deviceType = mapDeviceType(device.type);
     if (deviceType === 'lamp') {
       const message = changeLampState(device);
       xmpp.updateDeviceStatus(message);
     } else if (deviceType === 'thermostat') {
-      alert('thermostat');
+      this.setState({ thermostatModal: device, curtainModal: null });
     } else if (deviceType === 'curtain') {
-      alert('curtain');
+      this.setState({ curtainModal: device, thermostatModal: null });
     }
+  };
+
+  handleCloseModal = () => {
+    this.setState({ thermostatModal: null, curtainModal: null });
   };
 
   render() {
     const { match, deviceList, devices } = this.props;
+    const { thermostatModal, curtainModal } = this.state;
     return (
       <React.Fragment>
         <h3>{messages.devicesOf(match.params.placeId)}</h3>
@@ -62,6 +82,28 @@ class DevicesPage extends React.PureComponent<IComponentProps> {
             );
           })}
         </div>
+        <section>
+          {thermostatModal && (
+            <ThermostatModal
+              device={
+                devices[(thermostatModal as IDevice).number][
+                  (thermostatModal as IDevice).status
+                ]
+              }
+              onClose={this.handleCloseModal}
+            />
+          )}
+          {curtainModal && (
+            <CurtainModal
+              device={
+                devices[(curtainModal as IDevice).number][
+                  (curtainModal as IDevice).status
+                ]
+              }
+              onClose={this.handleCloseModal}
+            />
+          )}
+        </section>
       </React.Fragment>
     );
   }
